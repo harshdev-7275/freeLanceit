@@ -1,0 +1,6 @@
+/* Add this to your global CSS file or within a <style> tag */
+.progress-line {
+    height: 2px;
+    background-color: #3b82f6; /* Blue color */
+    transition: width 0.3s ease-in-out;
+  }
