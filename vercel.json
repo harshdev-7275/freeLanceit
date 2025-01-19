@@ -1,0 +1,22 @@
+{
+    "name": "freelanceit",
+    "builds": [
+      {
+        "src": "vite.config.ts",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "dist"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
+      }
+    ],
+    "env": {
+      "API_KEY": "AA9wz6Vh7rHvIXbC99Ak5VJm"
+    }
+  }
+  

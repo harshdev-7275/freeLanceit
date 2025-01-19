@@ -2,10 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DashBoard from "./screens/DashBoard";
 import SideBar from "./components/SideBar";
 import LecturePlayerLayout from "./components/LecturePlayerLayout";
-import { Lecture } from "./types/types";
 
-
-export default function App({lecture}: {lecture: Lecture}) {
+export default function App() {
   return (
     <BrowserRouter>
       <div className="flex h-screen">
