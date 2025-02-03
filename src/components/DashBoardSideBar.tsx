@@ -1,9 +1,9 @@
-import { useState } from "react"
 import type { Lecture } from "@/types/types"
 import { ChevronsLeft, ChevronsRight, CirclePlay } from "lucide-react"
-import { Button } from "./ui/button"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import logoImage from "../assets/logo.png"
+import { Button } from "./ui/button"
 
 const DashBoardSideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)

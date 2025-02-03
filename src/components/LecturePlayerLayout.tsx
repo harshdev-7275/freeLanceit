@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { data, useNavigate, useParams } from "react-router-dom";
 import { Lecture } from "@/types/types";
+import { useEffect, useState } from "react";
+import { data, useNavigate, useParams } from "react-router-dom";
 import ProtectedVideoPlayer from "./ProtectedVideoPlayer";
 
 

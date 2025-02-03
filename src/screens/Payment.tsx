@@ -1,10 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
-import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
-import { loadStripe, StripeCardElement } from '@stripe/stripe-js';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { StripeCardElement } from '@stripe/stripe-js';
+import React, { useState } from 'react';
 
 
-const stripePromise = loadStripe('pk_test_your_test_key_here'); // Use your test key
 
 
 const Payment = () => {
@@ -12,7 +11,6 @@ const Payment = () => {
     const elements = useElements()
     const [paymentError, setPaymentError] = useState<string | null>(null);
     const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
-    const [clientSecret, setClientSecret] = useState(''); // You'll get this from backend later
 
 
 
