@@ -43,8 +43,6 @@ const SideBar = () => {
                     </Button>
                 ))}
             </div>
-            
-            {/* Logout Button */}
             <div className="mt-auto">
                 <div className="p-3 rounded-lg transition-colors duration-300 hover:bg-red-500">
                     <LogOut />
