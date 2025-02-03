@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { data, useParams } from "react-router-dom";
+import { data, useNavigate, useParams } from "react-router-dom";
 import { Lecture } from "@/types/types";
 import ProtectedVideoPlayer from "./ProtectedVideoPlayer";
+import introLecture from "../assets/videos/introVideo.mp4"
 
 
 const lectureData: Lecture =
@@ -9,11 +10,10 @@ const lectureData: Lecture =
     id: 1,
     title: "Lecture 1",
     description: "description of lecture 1",
-    videoUrl: "https://cdn.pixabay.com/video/2022/09/20/131990-751915304_large.mp4",
+    videoUrl: "",
 
 }
 
-    ;
 
 const LecturePlayerLayout = () => {
     const { videoId } = useParams();
@@ -21,14 +21,13 @@ const LecturePlayerLayout = () => {
     const [progress, setProgress] = useState(0);
     const [lecture, setLecture] = useState<Lecture | null>(null);
     const [lectureUrl, setLectureUrl] = useState<string | null>(null);
+    const [isPurchased, setIsPurchased] = useState<boolean>(false);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
-        // Reset states when videoId changes
         setLoading(true);
         setProgress(0);
-
-        // Simulate a backend request
         const interval = setInterval(() => {
             setProgress((prevProgress) => {
                 if (prevProgress >= 100) {
@@ -42,9 +41,13 @@ const LecturePlayerLayout = () => {
             });
         }, 300);
 
-        // Cleanup interval on component unmount or videoId change
         return () => clearInterval(interval);
-    }, [videoId]); // Add videoId as a dependency
+    }, [videoId]);
+
+    const handleVideoComplete = () => {
+        navigate('/payment');
+      };
+
 
     return (
         <div className="w-full h-full">
@@ -64,25 +67,52 @@ const LecturePlayerLayout = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="w-full">
-                        {
-                            lecture && !loading && (
-                                <div className="mt-5 w-full">
-                                    {
-                                        lecture &&
-                                        <div className=" w-full">
-                                            {lectureUrl ? (
-                                                <ProtectedVideoPlayer url={lectureUrl} userData={data} />
-                                            ) : (
-                                                <div>Loading video...</div>
-                                            )}
-                                        </div>
-                                    }
-                                </div>
-                            )
-                        }
 
-                    </div>
+                    !isPurchased ? (
+                        <>
+                            <div className="w-full">
+                                {
+                                    introLecture && !loading && (
+                                        <div className="mt-5 w-full">
+                                            {
+                                                lecture &&
+                                                <div className=" w-full">
+                                                    {introLecture ? (
+                                                        <ProtectedVideoPlayer url={introLecture} userData={data} onComplete={handleVideoComplete}/>
+                                                    ) : (
+                                                        <div>Loading video...</div>
+                                                    )}
+                                                </div>
+                                            }
+                                        </div>
+                                    )
+                                }
+
+
+                            </div>
+                        </>) : (
+                        <>
+                            <div className="w-full">
+                                {
+                                    lecture && !loading && (
+                                        <div className="mt-5 w-full">
+                                            {
+                                                lecture &&
+                                                <div className=" w-full">
+                                                    {lectureUrl ? (
+                                                        <ProtectedVideoPlayer url={lectureUrl} userData={data} />
+                                                    ) : (
+                                                        <div>Loading video...</div>
+                                                    )}
+                                                </div>
+                                            }
+                                        </div>
+                                    )
+                                }
+
+                            </div>
+                        </>
+                    )
                 )}
 
             </div>

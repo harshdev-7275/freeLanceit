@@ -1,17 +1,17 @@
-import  { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 
-const ProtectedVideoPlayer = ({ url, userData }: { url: string; userData: any }) => {
+const ProtectedVideoPlayer = ({ url, userData, onComplete }: { url: string; userData: any, onComplete?: () => void }) => {
   const playerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  
-  // Track user viewing session
+  const [isEnded, setIsEnded] = useState<boolean>(false);
+
+
   const handleStart = () => {
     setIsPlaying(true);
-    // You can add analytics or session tracking here
   };
 
-  // Prevent keyboard shortcuts for download/saving
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const forbiddenKeys = ['s', 'S', 'u', 'U'];
     if ((e.ctrlKey || e.metaKey) && forbiddenKeys.includes(e.key)) {
@@ -19,7 +19,6 @@ const ProtectedVideoPlayer = ({ url, userData }: { url: string; userData: any })
     }
   };
 
-  // Custom control settings
   const config = {
     file: {
       attributes: {
@@ -31,9 +30,9 @@ const ProtectedVideoPlayer = ({ url, userData }: { url: string; userData: any })
 
   // Dynamic watermark with user info
   const Watermark = () => (
-    <div 
+    <div
       className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-50 select-none"
-      style={{ 
+      style={{
         background: `repeating-linear-gradient(
           45deg,
           transparent,
@@ -50,32 +49,47 @@ const ProtectedVideoPlayer = ({ url, userData }: { url: string; userData: any })
   );
 
   return (
-    <div 
-      className="relative"
-      onKeyDown={handleKeyPress}
-      tabIndex={0}
-    >
-      <ReactPlayer
-        ref={playerRef}
-        url={url}
-        width="100%"
+    <>
+      <div
+        className="relative"
+        onKeyDown={handleKeyPress}
+        tabIndex={0}
+      >
+        <ReactPlayer
+          ref={playerRef}
+          url={url}
+          width="100%"
+          onEnded={()=>{
+            if (typeof onComplete === 'function') {
+              onComplete();
+            }
+            setIsEnded(true);
+          }}
 
-        controls={true}
-        config={config}
-        onStart={handleStart}
-        // Prevent picture-in-picture
-        pip={false}
-        // Disable full screen if desired
-        // playsinline={true}
-        // Disable download button
-        download={false}
-        // Custom controls configuration
-        playbackRate={1.0}
+          controls={true}
+          config={config}
+          onStart={handleStart}
+          // Prevent picture-in-picture
+          pip={false}
+          // Disable full screen if desired
+          // playsinline={true}
+          // Disable download button
+          download={false}
+          // Custom controls configuration
+          playbackRate={1.0}
         // Prevent seeking if needed
         // onSeek={(e) => e.preventDefault()}
-      />
-      {isPlaying && <Watermark />}
-    </div>
+        />
+        {isPlaying && <Watermark />}
+      </div>
+      {
+        isEnded && <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-50 select-none">
+          <div className="p-4 text-sm text-white mix-blend-difference">
+            <span className="text-slate-300">Video completed! Redirecting to payment...</span>
+          </div>
+        </div>
+      }
+    </>
   );
 };
 
