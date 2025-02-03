@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { data, useNavigate, useParams } from "react-router-dom";
 import { Lecture } from "@/types/types";
 import ProtectedVideoPlayer from "./ProtectedVideoPlayer";
-import introLecture from "../assets/videos/introVideo.mp4"
 
 
 const lectureData: Lecture =
@@ -14,7 +13,7 @@ const lectureData: Lecture =
 
 }
 
-
+const introLecture = "https://streamable.com/e/ttl0d5"
 const LecturePlayerLayout = () => {
     const { videoId } = useParams();
     const [loading, setLoading] = useState(true);
@@ -78,7 +77,7 @@ const LecturePlayerLayout = () => {
                                                 lecture &&
                                                 <div className=" w-full">
                                                     {introLecture ? (
-                                                        <ProtectedVideoPlayer url={introLecture} userData={data} onComplete={handleVideoComplete}/>
+                                                        <ProtectedVideoPlayer url={"https://streamable.com/e/ttl0d5"} userData={data} onComplete={handleVideoComplete}/>
                                                     ) : (
                                                         <div>Loading video...</div>
                                                     )}
